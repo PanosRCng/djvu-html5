@@ -54,6 +54,9 @@ public class Djvu_html5 implements EntryPoint {
 	private Label statusImage;
 	private Status currentStatus;
 
+	public HighLighting highLighting;
+
+
 	/**
 	 * This is the entry point method.
 	 */
@@ -78,6 +81,21 @@ public class Djvu_html5 implements EntryPoint {
 		if (url == null || url.isEmpty()) {
 			GWT.log("ERROR: No djvu file defined");
 			return;
+		}
+
+		String highlights_url = Window.Location.getParameter("highlights");
+		if (highlights_url == null || highlights_url.isEmpty())
+			highlights_url = container.getElement().getAttribute("highlights");
+		if (highlights_url == null || highlights_url.isEmpty())
+			highlights_url = getIndexHighlights();
+		if (highlights_url == null || highlights_url.isEmpty()) {
+			GWT.log("ERROR: No highlights json url defined");
+			//return;
+		}
+		else
+		{
+			GWT.log("INFO: highlights json url defined");
+			this.highLighting = new HighLighting(highlights_url);
 		}
 
 		pageCache = new PageCache(this, url);
@@ -207,6 +225,10 @@ public class Djvu_html5 implements EntryPoint {
 
 	public String getIndexFile() {
 		return getString("file", null);
+	}
+
+	public String getIndexHighlights() {
+		return getString("highlights", null);
 	}
 
 	public int getTileSize() {

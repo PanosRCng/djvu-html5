@@ -298,6 +298,11 @@ public class SinglePageLayout implements DecodeListener, TileCacheListener {
 		// missing tile graphics may exceed the page boundary
 		graphics2d.fillRect(startX + pw, 0, w, h);
 		graphics2d.fillRect(0, startY + ph, w, h);
+
+		if(app.highLighting != null)
+		{
+			app.highLighting.draw(this.page, graphics2d, startX, startY, zoom, pageInfo.height);
+		}
 	}
 
 	@Override
